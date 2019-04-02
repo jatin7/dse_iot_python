@@ -1,0 +1,18 @@
+#!/bin/sh
+
+sudo pip install kafka-python
+pip install kafka-python
+
+wget -P /tmp/  https://archive.apache.org/dist/kafka/0.11.0.3/kafka_2.11-0.11.0.3.tgz
+
+mkdir -p /opt/kafka
+cd /opt/kafka
+tar -zxvf /tmp/kafka_2.11-0.11.0.3.tgz
+nohup /opt/kafka/kafka_2.11-0.11.0.3/bin/zookeeper-server-start.sh /opt/kafka/kafka_2.11-0.11.0.3/config/zookeeper.properties &
+sleep 5
+nohup /opt/kafka/kafka_2.11-0.11.0.3/bin/kafka-server-start.sh /opt/kafka/kafka_2.11-0.11.0.3/config/server.properties &
+sleep 10
+/opt/kafka/kafka_2.11-0.11.0.3/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic dse-iot
+sleep 3
+/opt/kafka/kafka_2.11-0.11.0.3/bin/kafka-topics.sh --alter --zookeeper localhost:2181 --topic dse-iot --config retention.ms=120000
+sleep 1
