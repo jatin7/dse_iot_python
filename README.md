@@ -7,8 +7,12 @@ High level solution:
 * Rollup data from DSE into Parquet files stored on DSE
 * Python+Flask based API. CQL for hot reads (DSE), SparkSQL for cold reads (DSEFS)
 
+Requirements:
+* DSE 6+ with Analytics enabled
+* Python Flask
+* PySpark
 
-###Notes:
+### Notes:
 
 Start producer:
 
