@@ -8,8 +8,10 @@ High level solution:
 * Python+Flask based API. CQL for hot reads (DSE), SparkSQL for cold reads (DSEFS)
 
 
-Notes:
+###Notes:
+
 Start producer:
+
 `./producter.py`
 
 Start consumer:
@@ -27,4 +29,5 @@ Messing with structured streaming:
 Curl examples:
 
 `curl -s --header "Content-Type: application/json" --request POST --data '{"bucket": "2019431954", "sensor": "843", "type": "temp"}' http://localhost:8080/batch/read`
+
 `curl -s --header "Content-Type: application/json" --request POST --data '{"bucket": "2019431954", "sensor": "843", "type": "temp"}' http://localhost:8080/rt/read`
