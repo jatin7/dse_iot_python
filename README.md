@@ -9,29 +9,31 @@ High level solution:
 
 Requirements:
 * DSE 6+ with Analytics enabled
+* Kafka (Setup below)
 * Python Flask
 * PySpark
 
 ### Notes:
 
-Start producer:
+* Clone repo:
+`git clone https://github.com/russkatz/dse-iot-python/ && cd dse-iot-python`
 
+* Setup Kafka
+`./startup all`
+
+* Start producer:
 `./producter.py`
 
-Start consumer:
-
+* Start consumer:
 `dse spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.2.2 consumer.py`
 
-Start REST API:
-
+* Start REST API:
 `dse spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.2.2 restAPI.py`
 
-Messing with structured streaming:
-
+* Messing with structured streaming:
 `dse spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.2.2 consumer-sql.py`
 
-Curl examples:
-
+* Curl examples:
 `curl -s --header "Content-Type: application/json" --request POST --data '{"bucket": "2019431954", "sensor": "843", "type": "temp"}' http://localhost:8080/batch/read`
 
 `curl -s --header "Content-Type: application/json" --request POST --data '{"bucket": "2019431954", "sensor": "843", "type": "temp"}' http://localhost:8080/rt/read`
