@@ -13,12 +13,15 @@ Start producer:
 `./producter.py`
 
 Start consumer:
+
 `dse spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.2.2 consumer.py`
 
 Start REST API:
+
 `dse spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.11:2.2.2 restAPI.py`
 
 Messing with structured streaming:
+
 `dse spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.11:2.2.2 consumer-sql.py`
 
 Curl examples:
