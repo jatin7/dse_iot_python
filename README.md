@@ -1,5 +1,5 @@
 # dse-iot-python
-## USE CASE: Ingest IOT sensor data, provide REST API to read data. Newer (hot) data requires low latency read SLAs while older (cold) data has to be available but can have higher SLAs.
+### USE CASE: Ingest IOT sensor data, provide REST API to read data. Newer (hot) data requires low latency read SLAs while older (cold) data has to be available but can have higher SLAs.
 
 High level solution:
 * Write sensor data to kafka
@@ -16,10 +16,14 @@ Requirements:
 ### Notes:
 
 * Clone repo:
+
 `git clone https://github.com/russkatz/dse-iot-python/ && cd dse-iot-python`
 
-* Setup Kafka
+
+* Setup Kafka:
+
 `./startup all`
+
 
 * Start producer:
 `./producter.py`
