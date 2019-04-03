@@ -15,9 +15,8 @@ Requirements:
 
 ### Notes:
 
-* Clone repo:
-
-`git clone https://github.com/russkatz/dse-iot-python/ && cd dse-iot-python`
+*Clone repo:*
+* `git clone https://github.com/russkatz/dse-iot-python/ && cd dse-iot-python`
 
 
 * Setup Kafka:
