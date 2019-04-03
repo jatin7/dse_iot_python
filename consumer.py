@@ -21,7 +21,11 @@ session = cluster.connect()
 iotwrite = session.prepare("INSERT INTO demo.iot (id, bucket, ts, sensor, type, reading) VALUES (now(), ?, ?, ?, ?, ?)")
 
 #Setup Spark Context for DSE
-conf = SparkConf().setAppName("IOT Demo Consumer")
+conf = SparkConf() \
+ .setAppName("IOT Demo Consumer") \
+ .set('spark.executor.cores', '3') \
+ .set('spark.cores.max', '3') \
+ .set('spark.driver.memory','2g')
 sc = SparkContext(conf=conf)
 sqlContext = SQLContext(sc)
 

@@ -29,7 +29,11 @@ CORS(app)
 def setupSpark():
    print "Setting up spark connection"
    global sqlContext
-   conf = SparkConf().setAppName("RestAPI")#.set("spark.driver.allowMultipleContexts", "true")
+   conf = SparkConf() \
+    .setAppName("Rest API") \
+    .set('spark.executor.cores', '3') \
+    .set('spark.cores.max', '3') \
+    .set('spark.driver.memory','2g')
    sc = SparkContext(conf=conf)
    sqlContext = SQLContext(sc)
    parquetFile = sqlContext.read.parquet("demo/iot.pqt/")
@@ -39,7 +43,6 @@ def setupSpark():
    global session
    cluster = Cluster(contact_points=contactpoints)
    session = cluster.connect()
-   session.row_factory = dict_factory
 
 #refreshSQL()
 
@@ -54,7 +57,7 @@ def batchRead():
    query = "SELECT * FROM demo.iot WHERE"
    for k in keys:
       if keys[k] != None:
-         query = query + " AND " + k + " = " + keys[k]
+         query = query + " AND " + k + " = \"" + keys[k] + "\""
    query = query.replace('WHERE AND', 'WHERE')
    rows = sqlContext.sql(query)
    d = map(lambda row: row.asDict(), rows.collect())
@@ -65,11 +68,18 @@ def batchRead():
 def rtRead():
    if not request.json or not 'bucket' in request.json or not 'sensor' in request.json:
       abort(400)
-   query = """SELECT * FROM demo.iot WHERE bucket = '%s' and sensor = '%s'""" % (str(request.json['bucket']), str(request.json['sensor']))
+   query = """SELECT bucket, sensor, ts, type, reading FROM demo.iot WHERE bucket = '%s' and sensor = '%s'""" % (str(request.json['bucket']), str(request.json['sensor']))
+   #session.row_factory = dict_factory
    rows = session.execute(query)
    v = []
    for r in rows:
-      v = v + list(r)
+      bucket = r[0]
+      sensor = r[1]
+      ts = r[2]
+      type = str(r[3])
+      reading = r[4]
+      t = {'bucket': bucket, 'sensor': sensor, 'ts': ts, 'type': type, 'reading': reading}
+      v.append(t)
    return json.dumps(v)
 
 
