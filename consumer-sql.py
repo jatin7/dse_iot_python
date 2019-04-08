@@ -1,28 +1,21 @@
 #!/usr/bin/python
-
-#from pyspark import SparkContext, SparkConf
-#from pyspark.streaming import *
-#from pyspark.sql import *
 from pyspark.streaming.kafka import *
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import explode
+from pyspark.sql import *
 import json
 
+def processRow(df):
+    # Transform and write batchDF
+    print(type(df))
+    pass
 
-#Setup Spark Context for DSE
-#conf = SparkConf().setAppName("Stand Alone Python Script")
-#sc = SparkContext(conf=conf)
-#sqlContext = SQLContext(sc)
-#print sc.version
 
+print("Building spark session")
 spark = SparkSession \
     .builder \
     .appName("SSKafka") \
     .getOrCreate()
 
-
 #Setup Streaming
-
 ds = spark \
   .readStream \
   .format("kafka") \
@@ -31,20 +24,17 @@ ds = spark \
   .option("startingOffsets", "latest") \
   .load()
 
-row = ds.select(
-   explode(
-       spark.parallelize(str(ds.value))
-   ).alias("getrow")
-)
+print(type(ds))
 
-rdd = sc.parallelize(row)
+dse = ds.writeStream.foreach(processRow) 
 
-iotrow = row \
-    .writeStream \
-    .outputMode("complete") \
-    .format("console") \
-    .start()
+dsefs = ds.writeStream \
+      .format("parquet") \
+      .option("path", "dsefs://localhost:5598/parquet/") \
+      .option("checkpointLocation", "dsefs://localhost:5598/checkpoints/") \
+      .trigger(processingTime='60 seconds') \
+      .outputMode("Append") \
+      .start()
 
-#print(type(ds))
-#ds.printSchema()
+dsefs.awaitTermination()
 
