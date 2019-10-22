@@ -10,7 +10,7 @@ High level solution:
 Requirements:
 * DSE 6+ with Analytics enabled
 * Kafka (Setup below)
-* Python Flask
+* Python Flask - sudo pip install Flask
 * PySpark
 
 ### Notes:
